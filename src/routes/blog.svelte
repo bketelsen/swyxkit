@@ -1,7 +1,7 @@
 <script context="module">
 	// export const prerender = true; // turned off so it refreshes quickly
 	export async function load({ params, fetch }) {
-		const res = await fetch(`/api/listBlogposts.json`);
+		const res = await fetch(`/api/blog.json`);
 		// alternate strategy https://www.davidwparker.com/posts/how-to-make-an-rss-feed-in-sveltekit
 		// Object.entries(import.meta.glob('./*.md')).map(async ([path, page]) => {
 		if (res.status > 400) {
@@ -10,9 +10,9 @@
 				error: await res.text()
 			};
 		}
-		const items = await res.json();
+		const {page, posts} = await res.json();
 		return {
-			props: { items },
+			props: {  page, posts },
 			maxage: 60 // 1 minute
 		};
 	}
@@ -22,63 +22,28 @@
 	import IndexCard from '../components/IndexCard.svelte';
 
 	export let page;
-	export let list;
-	export let items;
+	export let posts;
 
-	const PAGE_SIZE = 30;
+	console.log(page)
 
-	$: start = 1 + (page - 1) * PAGE_SIZE;
-	$: next = `/${list}/${+page + 1}`;
 
-	let isTruncated = items.list.length > 20;
-	let search;
-	$: list = items.list
-		.filter((item) => {
-			if (search) {
-				return item.title.toLowerCase().includes(search.toLowerCase());
-			}
-			return true;
-		})
-		.slice(0, isTruncated ? 2 : items.list.length);
 </script>
 
 <svelte:head>
-	<title>Swyxkit Blog Index</title>
-	<meta name="description" content="Latest Hacker News stories in the {list} category" />
+	<title>{page.seo.metaTitle}</title>
+	<meta name="description" content={page.seo.metaDescription} />
 </svelte:head>
 
 <section class="flex flex-col items-start justify-center max-w-2xl mx-auto mb-16">
-	<h1 class="mb-4 text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white">
-		Blog
+	<h1 class="mb-4 text-3xl font-bold tracking-tight md:text-5xl ">
+		{page.title}
 	</h1>
-	<p class="mb-4 text-gray-600 dark:text-gray-400">
-		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum sunt reprehenderit alias rerum
-		dolor impedit. In total, I've written {items.list.length} articles on my blog. Use the search below
-		to filter by title.
+	<p class="mb-4 ">
+		{page.herotext}
 	</p>
-	<div class="relative w-full mb-4">
-		<input
-			aria-label="Search articles"
-			type="text"
-			bind:value={search}
-			placeholder="Search articles"
-			class="block w-full px-4 py-2 text-gray-900 bg-white border border-gray-200 rounded-md dark:border-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-gray-100"
-		/><svg
-			class="absolute w-5 h-5 text-gray-400 right-3 top-3 dark:text-gray-300"
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke="currentColor"
-			><path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-			/></svg
-		>
-	</div>
-	{#if !search}
-		<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
+
+
+		<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight  md:text-4xl ">
 			Most Popular
 		</h3>
 		<IndexCard href="/foo" title="Hardcoded Blogpost # 1" date="106,255 views">
@@ -91,13 +56,13 @@
 			Just a hardcorded blogpost or you can use the metadata up to you
 		</IndexCard>
 
-		<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
+		<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight  md:text-4xl ">
 			All Posts
 		</h3>
-	{/if}
-	{#if list.length}
+
+	{#if posts.length}
 		<ul class="">
-			{#each list as item}
+			{#each posts as item}
 				<li class="mb-8 text-lg">
 					<!-- <code class="mr-4">{item.data.date}</code> -->
 					<IndexCard
@@ -106,27 +71,12 @@
 						date={new Date(item.date).toISOString().slice(0, 10)}
 						ghMetadata={item.ghMetadata}
 					>
-						{item.description}
+						{item.excerpt || ""}
 					</IndexCard>
 				</li>
 			{/each}
 		</ul>
-		{#if isTruncated}
-			<div class="flex justify-center">
-				<button
-					on:click={() => (isTruncated = false)}
-					class="inline-block text-lg font-bold tracking-tight text-black md:text-2xl dark:text-white bg-blue-100 dark:bg-blue-900 rounded p-4 hover:text-yellow-900 hover:dark:text-yellow-200"
-				>
-					Load More Posts...
-				</button>
-			</div>
-		{/if}
-	{:else if search}
-		<div class="prose dark:prose-invert">
-			No posts found for
-			<code>{search}</code>.
-		</div>
-		<button class="p-2 bg-slate-500" on:click={() => search = ""}>Clear your search</button>
+
 	{:else}
 		<div class="prose dark:prose-invert">No blogposts found!</div>
 	{/if}

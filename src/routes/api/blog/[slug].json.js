@@ -1,25 +1,39 @@
-import { getBlogpost } from '$lib/content';
+import {AUTHOR_CARD_FRAGMENT} from '$lib/queries'
+import {client} from '$lib/sanityClient'
 
-/**
- * @type {import('@sveltejs/kit').RequestHandler}
- */
-export async function get({ params }) {
-	const { slug } = params;
-	let data
-	try {
-		data = await getBlogpost(slug);
-		return {
-			body: {
-				data: JSON.stringify(data)
-			},
-			headers: {
-				'Cache-Control': `max-age=0, s-max-age=${60}`, // 1 minute.. for now
+// Gets a specific blog post from its slug.current value
+export async function get({params: {slug}}) {
+  const post = await client.fetch(/* groq */ `*[_type == "post" && slug.current == "${slug}"][0]{
+    ...,
+		"authors": authors[].author->{
+			${AUTHOR_CARD_FRAGMENT}
+		},
+    body[] {
+      ...,
+			children[] {
+				...,
+				// authorReference is an inline block, and will show inside PortableText spans (block.children)
+				// Let's expand the reference to the author document & get its name, slug & image
+				_type == "authorReference" => {
+					author->{
+						${AUTHOR_CARD_FRAGMENT}
+					}
+				}
 			}
-		};
-	} catch(err) {
-		return {
-			status: 404,
-			body: err.message,
-		}
-	}
+    }
+  }`)
+
+  if (post) {
+    return {
+      status: 200,
+      body: {
+        post
+      }
+    }
+  }
+
+  return {
+    status: 500,
+    body: new Error('Internal Server Error')
+  }
 }

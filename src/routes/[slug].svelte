@@ -2,7 +2,6 @@
 	// export const prerender = true; // you can uncomment to prerender as an optimization
 	export const hydrate = true;
 	import { REPO_URL, SITE_URL } from '$lib/siteConfig';
-	import Comments from '../components/Comments.svelte';
 	export async function load({ url, params, fetch }) {
 		const slug = params.slug;
 		try {
@@ -13,17 +12,12 @@
 					error: await res.text()
 				};
 			}
-			const x = (await res.json()).data;
-			const json = JSON.parse(x);
-
-			return {
-				props: {
-					json,
-					slug,
-					REPO_URL
-				},
-				maxage: 60 // 1 minute
-			};
+			const data = await res.json();
+			if (data?.post) {
+				return {
+					props: data
+				};
+			}
 		} catch (err) {
 			console.error('error fetching blog post at [slug].svelte: ' + slug, err);
 			return {
@@ -37,12 +31,16 @@
 <script>
 	import 'prism-themes/themes/prism-shades-of-purple.min.css';
 	import Newsletter from '../components/Newsletter.svelte';
-	import Reactions from '../components/Reactions.svelte';
-	export let json
-	let title = json.title;
-	let date = json.date;
-	let content = json.content;
-	let ghMetadata = json.ghMetadata;
+	import PortableText from '@portabletext/svelte';
+	import Code from '../components/Code.svelte';
+	import Link from '../components/Link.svelte';
+	import ImageBlock from '../components/ImageBlock.svelte';
+	import AuthorBlock from '../components/AuthorBlock.svelte';
+	export let post;
+	console.log(post);
+	let title = post.title;
+	let date = post.publishedAt;
+
 	// export let slug;
 	// export let REPO_URL
 </script>
@@ -55,51 +53,46 @@
 	<meta property="og:url" content={SITE_URL} />
 	<meta property="og:type" content="article" />
 	<meta property="og:title" content={title} />
-	<meta name="Description" content={json.description} />
-	<meta property="og:description" content={json.description} />
+	<meta name="Description" content={post.excerpt} />
+	<meta property="og:description" content={post.excerpt} />
 	<meta name="twitter:card" content="summary" />
 	<meta name="twitter:creator" content="https://twitter.com/swyx/" />
 	<meta name="twitter:title" content={title} />
-	<meta name="twitter:description" content={json.description} />
-	{#if json.image}
-		<meta property="og:image" content={json.image} />
+	<meta name="twitter:description" content={post.excerpt} />
+
+	<!--	<meta property="og:image" content={post.seo} />
 		<meta name="twitter:image" content={json.image} />
-	{/if}
+	-->
 </svelte:head>
 
 <article class="flex flex-col items-start justify-center w-full max-w-2xl mx-auto mb-16">
-	<h1 class="mb-4 text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white ">
+	<h1 class="mb-4 text-3xl font-bold tracking-tight  md:text-5xl ">
 		{title}
 	</h1>
 	<div class="flex flex-col items-start justify-between w-full mt-2 md:flex-row md:items-center bg">
 		<div class="flex items-center">
-			<p class="ml-2 text-sm text-gray-700 dark:text-gray-300">swyx</p>
+			<p class="ml-2 text-sm ">Brian</p>
 		</div>
-		<p class="mt-2 text-sm text-gray-600 dark:text-gray-400 min-w-32 md:mt-0">
-			<a href={ghMetadata.issueUrl} rel="external" class="no-underline" target="_blank">
-				<span class="mr-4 text-xs font-mono text-opacity-70 text-gray-700 dark:text-gray-300"
-					>{ghMetadata.reactions.total_count} reactions</span
-				>
-			</a>
+		<p class="mt-2 text-sm min-w-32 md:mt-0">
 			{new Date(date).toISOString().slice(0, 10)}
 		</p>
 	</div>
-	<div class="flex h-1 w-full my-2 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500" />
+	<div class="flex h-1 w-full my-2 bg-gradient-to-r from-primary via-primary-focus to-accent" />
 
-	<div class="w-full mt-16 mb-32 prose dark:prose-invert max-w-none">
-		{@html content}
-	</div>
-	<div class="prose dark:prose-invert border-t border-b p-4 border-blue-800 mb-12">
-		{#if ghMetadata.reactions.total_count > 0}
-			Reactions: <Reactions {ghMetadata} />
-		{:else}
-			<a href={ghMetadata.issueUrl}>Leave a reaction </a>
-			if you liked this post! 🧡
-		{/if}
-	</div>
-
-	<div class="mb-8">
-		<Comments {ghMetadata} />
+	<div class="w-full mt-16 mb-32 prose-xl prose dark:prose-invert max-w-none">
+		<PortableText
+			blocks={post.body}
+			serializers={{
+				types: {
+					code: Code,
+					image: ImageBlock,
+					authorReference: AuthorBlock
+				},
+				marks: {
+					link: Link
+				}
+			}}
+		/>
 	</div>
 
 	<Newsletter />

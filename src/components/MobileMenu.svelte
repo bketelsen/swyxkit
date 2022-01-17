@@ -23,7 +23,7 @@
 >
 	{#if !isOpen}
 		<svg
-			class="h-5 w-5 absolute text-gray-900 dark:text-gray-100"
+			class="h-5 w-5 absolute "
 			width="20"
 			height="20"
 			viewBox="0 0 20 20"
@@ -44,7 +44,7 @@
 		>
 	{:else}
 		<svg
-			class="h-5 w-5 absolute text-gray-900 dark:text-gray-100"
+			class="h-5 w-5 absolute "
 			viewBox="0 0 24 24"
 			width="24"
 			height="24"
@@ -60,29 +60,29 @@
 </button>
 {#if isOpen}
 	<ul
-		class="menu flex flex-col absolute bg-gray-50 dark:bg-gray-900  uppercase text-2xl"
+		class="menu flex flex-col absolute bg-base-100 uppercase text-2xl"
 		class:menuRendered={isMenuRendered}
 	>
 		<li
-			class="border-b border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 font-semibold"
+			class="border-b border-gray-300 dark:border-gray-700  font-semibold"
 			style="transition-delay: 150ms;"
 		>
 			<a class="flex w-auto pb-4" on:click={() => setTimeout(() => isOpen = false, 200)} href="/">Home</a>
 		</li>
 		<li
-			class="border-b border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 font-semibold"
+			class="border-b border-gray-300 dark:border-gray-700  font-semibold"
 			style="transition-delay: 250ms;"
 		>
 			<a class="flex w-auto pb-4" on:click={() => setTimeout(() => isOpen = false, 200)} href="/blog">Blog</a>
 		</li>
 		<li
-			class="border-b border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 font-semibold"
+			class="border-b border-gray-300 dark:border-gray-700  font-semibold"
 			style="transition-delay: 350ms;"
 		>
 			<a class="flex w-auto pb-4" on:click={() => setTimeout(() => isOpen = false, 200)} href="/about">About</a>
 		</li>
 		<li
-			class="border-b border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 font-semibold"
+			class="border-b border-gray-300 dark:border-gray-700  font-semibold"
 			style="transition-delay: 400ms;"
 		>
 			<a class="flex w-auto pb-4" on:click={() => setTimeout(() => isOpen = false, 200)} href="https://github.com/sw-yx/swyxkit">GitHub</a>

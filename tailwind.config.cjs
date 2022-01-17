@@ -4,7 +4,6 @@ module.exports = {
 		// may also want to include HTML files
 		'./src/**/*.html'
 	],
-	darkMode: 'class',
 	theme: {
 		extend: {
 			typography: theme => ({
@@ -17,5 +16,5 @@ module.exports = {
 		}
 	},
 	variants: {},
-	plugins: [require('@tailwindcss/typography')]
+	plugins: [require('@tailwindcss/typography'), require('daisyui')],
 };

@@ -7,16 +7,16 @@
 
 <section class="mb-16 w-full" id="newsletter">
 	<div
-		class="border border-blue-200 rounded p-6 my-4 w-full dark:border-gray-600 bg-blue-50 dark:bg-gray-800"
+		class="border border-accent-focus rounded p-6 my-4 w-full  bg-primary "
 	>
-		<div class="flex justify-between items-center space-x-4">
-			<p class="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
+		<div class="flex justify-between items-center space-x-4 text-primary-content">
+			<p class="text-lg md:text-xl font-bold">
 				Subscribe to the newsletter
 			</p>
 
 			<button
 				aria-label="Toggle Newsletter CTA"
-				class="w-9 h-9 rounded-lg  flex items-center justify-center hover:ring-2 ring-gray-300 transition-all"
+				class="w-9 h-9 rounded-lg  flex items-center justify-center hover:ring-2 ring-primary transition-all"
 				on:click={toggleNewsletter}
 			>
 				{#if isNewsletterOpen}
@@ -49,7 +49,7 @@
 			</button>
 		</div>
 		{#if isNewsletterOpen}
-			<p class="my-1 text-gray-800 dark:text-gray-200">
+			<p class="my-1 ">
 				Get emails from me about <span class="font-bold"
 					>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero, ducimus.</span
 				>.
@@ -61,14 +61,14 @@
 					placeholder="tim@apple.com"
 					autocomplete="email"
 					required={true}
-					class="px-4 py-2 mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full border-gray-300 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pr-32"
+					class="px-4 py-2 mt-1  block w-full  rounded-md bg-white   pr-32"
 				/><button
-					class="flex items-center justify-center absolute right-1 top-1 px-4 pt-1 font-medium h-8 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded w-28"
+					class="flex items-center justify-center absolute right-1 top-1 px-4 pt-1 font-medium h-8 bg-secondary   rounded w-28"
 					type="submit">Subscribe</button
 				>
 			</form>
-			<p class="text-sm text-gray-800 dark:text-gray-200">
-				3 subscribers including my Mom – <a href="/#newsletter">23 issues</a>
+			<p class="text-sm ">
+				3 subscribers including my Mom – <a class="text-content" href="/#newsletter">23 issues</a>
 			</p>
 		{/if}
 	</div>

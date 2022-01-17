@@ -1,14 +1,28 @@
 <script context="module">
 	import { SITE_URL, REPO_URL } from '$lib/siteConfig';
 	export const prerender = true; // index page is most visited, lets prerender
+		export async function load({ fetch }) {
+		try {
+			const res = await fetch('/index.json');
+			const data = await res.json();
+			return {
+				props: data
+			};
+		} catch (err) {
+			console.log('500:', err);
+		}
+	}
 </script>
 
 <script>
 	import Newsletter from '../components/Newsletter.svelte';
 	import FeatureCard from '../components/FeatureCard.svelte';
+	import SectionCard from '../components/SectionCard.svelte';
+	export let sections;
+	export let page = {};
 	// meta tags
-	let Title = 'swyxkit';
-	let Description = "swyx's default SvelteKit + Tailwind starter";
+	let Title = page && page.seo.metaTitle || "Brian Ketelsen";
+	let Description = page && page.seo.metaDescription || "Home on the Range";
 	let ogImage =
 		'https://user-images.githubusercontent.com/6764957/147861359-3ad9438f-41d1-47c8-aa05-95c7d18497f0.png';
 </script>
@@ -24,43 +38,48 @@
 	<meta property="og:description" content={Description} />
 	<meta property="og:image" content={ogImage} />
 	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:creator" content="https://twitter.com/swyx/" />
+	<meta name="twitter:creator" content="https://twitter.com/bketelsen/" />
 	<meta name="twitter:title" content={Title} />
 	<meta name="twitter:description" content={Description} />
 	<meta name="twitter:image" content={ogImage} />
 </svelte:head>
 
 <div
-	class="flex flex-col justify-center items-start max-w-2xl border-gray-200 dark:border-gray-700 mx-auto pb-16"
+	class="flex flex-col justify-center items-start max-w-2xl  mx-auto pb-16"
 >
 	<div class="flex flex-col-reverse sm:flex-row items-start">
 		<div class="flex flex-col pr-8">
-			<h1 class="font-bold text-3xl md:text-5xl tracking-tight mb-3 text-black dark:text-white">
-				This is
-
+			<h1 class="font-bold text-3xl md:text-5xl tracking-tight mb-5 text-base-content">
 				<span
-					class="ml-2 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-red-500 relative inline-block"
+					class="ml-2 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-accent relative inline-block"
 				>
-					<span class="relative text-yellow-400 skew-y-3">SwyxKit</span>
+					<span class="relative text-primary skew-y-3">{page.title}</span>
 				</span>
-				!
+
 			</h1>
-			<h2 class="text-gray-700 dark:text-gray-200 mb-4">
-				An opinionated blog starter for <span class="font-semibold"
-					>SvelteKit + Tailwind + Netlify.</span
-				> Refreshed for 2022!
+			<h2 class="text-xl text-base-content mb-16">
+			{page.herotext}
 			</h2>
-			<p class="text-gray-600 dark:text-gray-400 mb-16">
-				<a href={REPO_URL}>View source here!</a>
-			</p>
+
 		</div>
 		<!-- <div
 				class="w-[80px] h-[80px] rounded-full sm:w-[176px] sm:h-[136px] relative mb-8 sm:mb-0 mr-auto bg-cyan-300 bg-opacity-25"
 			/> -->
 	</div>
-
 	<section class="mb-16 w-full">
-		<h3 class="font-bold text-2xl md:text-4xl tracking-tight mb-6 text-black dark:text-white">
+		<h3 class="font-bold text-2xl md:text-4xl tracking-tight mb-6 ">
+			The Goods
+		</h3>
+		<div class="flex gap-6 flex-col md:flex-row">
+			{#each sections as section}
+			<SectionCard title={section.title} href={section.slug.current} description={section.description} />
+			{/each}
+
+		</div>
+
+	</section>
+	<section class="mb-16 w-full">
+		<h3 class="font-bold text-2xl md:text-4xl tracking-tight mb-6 ">
 			Featured Posts
 		</h3>
 		<div class="flex gap-6 flex-col md:flex-row">
@@ -73,8 +92,8 @@
 			<FeatureCard title="HTML Ipsum demo" href="/moo" date={'Jan 2022'} />
 		</div>
 		<a
-			class="flex mt-8 text-gray-600 dark:text-gray-400 leading-7 rounded-lg 
-				 dark:hover:text-gray-200 transition-all h-6"
+			class="flex mt-8 0 leading-7 rounded-lg
+				 hover:text-primary transition-all h-6"
 			href="/blog"
 			>See latest posts<svg
 				xmlns="http://www.w3.org/2000/svg"

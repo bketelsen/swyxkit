@@ -5,8 +5,9 @@
 </script>
 
 <a
-	class="text-gray-800 dark:text-gray-200 hidden md:inline-block p-1 sm:px-3 sm:py-2 rounded-lg hover:bg-yellow-200 dark:hover:bg-yellow-800 transition-all"
+class="ml-2 hidden md:inline-block p-1 sm:px-3 sm:py-2 rounded-lg before:block before:absolute hover:before:inset-1 hover:before:-skew-y-2 before:bg-primary relative inline-block"
 	class:font-semibold={isActive}
 	{href}
-	><span class="capsize"><slot /> </span>
+	> <span class="relative skew-y-3 capsize">
+ <slot /> </span>
 </a>

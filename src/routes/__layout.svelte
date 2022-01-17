@@ -1,51 +1,54 @@
 <script>
 	import '../tailwind.css';
 	import Nav from '../components/Nav.svelte';
-	export let origin = ''
+	export let global;
+	export let sections;
+	export let origin = '';
+
+
+
 </script>
 <script context="module">
-	import { REPO_URL } from '$lib/siteConfig';
-	/** @type {import('@sveltejs/kit').Load} */
-	export async function load({ url }) {
-		return {
-			props: {
-				origin: url.origin
-			}
-		};
+	export async function load({ fetch,url }) {
+			const res = await fetch('/global.json');
+			const {global,sections} = await res.json();
+			return {
+				props: {global,sections,origin: url.origin}
+			};
 	}
 </script>
 
-<div class="flex flex-col justify-center px-8 bg-gray-50 dark:bg-gray-900">
-	<Nav />
+<div class="flex flex-col justify-center px-8 bg-base-100 ">
+	<Nav sections={sections}/>
 </div>
-<main class="flex flex-col justify-center px-8 bg-gray-50 dark:bg-gray-900">
+<main class="flex flex-col justify-center px-8 bg-base-100 ">
 	<slot />
 
 	<footer class="flex flex-col justify-center items-start max-w-2xl mx-auto w-full mb-8">
-		<hr class="w-full border-1 border-gray-200 dark:border-gray-800 mb-8" />
+		<div class="w-full h-1 border-1 bg-gradient-to-r from-primary via-primary-focus to-accent mb-8" />
 		<!-- <div class="w-full max-w-2xl grid grid-cols-1 gap-4 pb-16 sm:grid-cols-3"> -->
 		<div class="w-full max-w-2xl grid grid-cols-1 gap-4 pb-16 sm:grid-cols-2">
 			<div class="flex flex-col space-y-4">
-				<a class="text-gray-500 hover:text-gray-300 transition" href="/">Home</a><a
-					class="text-gray-500 hover:text-gray-300 transition"
+				<a class="" href="/">Home</a><a
+					class=" "
 					href="/about">About</a
 				>
-				<a class="text-gray-500 hover:text-gray-300 transition" href="/#newsletter">Newsletter</a>
-				<a class="text-gray-500 hover:text-gray-300 transition" href={origin + "/api/rss.xml"} rel="external">RSS</a>
+				<a class="" href="/#newsletter">Newsletter</a>
+				<a class="" href={origin + "/api/rss.xml"} rel="external">RSS</a>
 			</div>
 			<div class="flex flex-col space-y-4">
 				<a
-					class="text-gray-500 hover:text-gray-300 transition"
+					class=""
 					target="_blank"
 					rel="noopener noreferrer"
 					href="https://twitter.com/swyx">Twitter</a
 				><a
-					class="text-gray-500 hover:text-gray-300 transition"
+					class=""
 					target="_blank"
 					rel="noopener noreferrer"
 					href="https://github.com/sw-yx/swyxkit">GitHub</a
 				><a
-					class="text-gray-500 hover:text-gray-300 transition"
+					class=""
 					target="_blank"
 					rel="noopener noreferrer"
 					href="https://youtube.com/swyxTV">YouTube</a

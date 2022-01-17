@@ -13,6 +13,7 @@
 <script>
 	import MobileMenu from './MobileMenu.svelte';
 	import NavLink from './NavLink.svelte';
+	export let sections;
 	export let origin = '';
 	let isDark = false;
 	if (typeof localStorage !== 'undefined') {
@@ -25,11 +26,11 @@
 	}
 	function toggleDarkMode() {
 		if (isDark) {
-			document.documentElement.classList.remove('dark');
+			document.documentElement.setAttribute("data-theme", 'cmyk');
 			localStorage.theme = 'light';
 			isDark = false;
 		} else {
-			document.documentElement.classList.add('dark');
+			document.documentElement.setAttribute("data-theme", 'dark');
 			localStorage.theme = 'dark';
 			isDark = true;
 		}
@@ -37,19 +38,20 @@
 </script>
 
 <nav
-class="flex items-center justify-between w-full relative max-w-2xl border-gray-200 dark:border-gray-700 mx-auto pt-8 pb-8 sm:pb-16 text-gray-900 bg-gray-50 dark:bg-gray-900 bg-opacity-60 dark:text-gray-100"
+	class="flex items-center justify-between w-full relative max-w-2xl border-base-200  mx-auto pt-8 pb-8 sm:pb-16 text-base-content bg-base-100  bg-opacity-60 "
 >
 	<a href="#skip" class="skip-nav">Skip to content</a>
 	<MobileMenu />
 	<ul class="ml-[-0.60rem] flex">
 		<li><NavLink href="/">Home</NavLink></li>
-		<li><NavLink href="/blog">Blog</NavLink></li>
-		<li><NavLink href="/about">About</NavLink></li>
+		{#each sections as section}
+			<li><NavLink href={section.slug.current}>{section.title}</NavLink></li>
+		{/each}
 	</ul>
 	<div class="flex items-center space-x-4">
 		<!-- RSS -->
 		<a
-			class="text-gray-700 dark:text-gray-200 hover:bg-yellow-200 dark:hover:bg-yellow-800 rounded-lg"
+			class="text-base-content hover:bg-primary rounded-lg"
 			rel="external"
 			href={origin + '/api/rss.xml'}
 			aria-label="RSS"
@@ -71,7 +73,12 @@ class="flex items-center justify-between w-full relative max-w-2xl border-gray-2
 			</svg>
 		</a>
 		<!-- GIthub -->
-		<a class="text-gray-700 dark:text-gray-200 hover:bg-yellow-200 dark:hover:bg-yellow-800 rounded-lg" href={REPO_URL} aria-label="GitHub source">
+		<a
+		class="text-base-content hover:bg-primary rounded-lg"
+
+			href={REPO_URL}
+			aria-label="GitHub source"
+		>
 			<svg aria-hidden="true" class="h-9 w-9 p-1" fill="currentColor" viewBox="0 0 24 24"
 				><path
 					fill-rule="evenodd"
@@ -80,9 +87,11 @@ class="flex items-center justify-between w-full relative max-w-2xl border-gray-2
 				/></svg
 			>
 		</a>
-		<button
+		<div>
+			<button
 			aria-label="Toggle Dark Mode"
-			class="w-9 h-9 ml-1 dark:bg-yellow-800 rounded-lg bg-yellow-400  flex items-center justify-center hover:ring-2 ring-yellow-400 transition-all"
+			class="w-9 h-9 ml-1  flex items-center justify-center hover:ring-2 hover:ring-primary transition-all hover:bg-primary rounded-lg"
+
 			on:click={toggleDarkMode}
 		>
 			{#if isDark}
@@ -91,7 +100,7 @@ class="flex items-center justify-between w-full relative max-w-2xl border-gray-2
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="currentColor"
-					class="w-5 h-5 text-gray-800 dark:text-yellow-100"
+					class="w-5 h-5 "
 					><path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -105,7 +114,7 @@ class="flex items-center justify-between w-full relative max-w-2xl border-gray-2
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="currentColor"
-					class="w-5 h-5 text-gray-800 dark:text-gray-200"
+					class="w-5 h-5 "
 					><path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -115,6 +124,7 @@ class="flex items-center justify-between w-full relative max-w-2xl border-gray-2
 				>
 			{/if}
 		</button>
+		</div>
 	</div>
 </nav>
 
@@ -130,7 +140,7 @@ class="flex items-center justify-between w-full relative max-w-2xl border-gray-2
 		transition-duration: 0.2s;
 	}
 	/* .nav-link {
-		@apply dark:hover:text-blue-100 hover:text-blue-400 
+		@apply dark:hover:text-blue-100 hover:text-blue-400
 	} */
 	/* Nav link pseudos */
 	/* .nav-link:hover {

@@ -45,7 +45,7 @@
 	<ul class="ml-[-0.60rem] flex">
 		<li><NavLink href="/">Home</NavLink></li>
 		{#each sections as section}
-			<li><NavLink href={section.slug.current}>{section.title}</NavLink></li>
+			<li><NavLink href={'/' + section.slug.current}>{section.title}</NavLink></li>
 		{/each}
 	</ul>
 	<div class="flex items-center space-x-4">

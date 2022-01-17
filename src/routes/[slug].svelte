@@ -37,7 +37,7 @@
 	import ImageBlock from '../components/ImageBlock.svelte';
 	import AuthorBlock from '../components/AuthorBlock.svelte';
 	export let post;
-	console.log(post);
+
 	let title = post.title;
 	let date = post.publishedAt;
 

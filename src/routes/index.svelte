@@ -1,7 +1,7 @@
 <script context="module">
 	import { SITE_URL, REPO_URL } from '$lib/siteConfig';
 	export const prerender = true; // index page is most visited, lets prerender
-		export async function load({ fetch }) {
+	export async function load({ fetch }) {
 		try {
 			const res = await fetch('/index.json');
 			const data = await res.json();
@@ -21,8 +21,8 @@
 	export let sections;
 	export let page = {};
 	// meta tags
-	let Title = page && page.seo.metaTitle || "Brian Ketelsen";
-	let Description = page && page.seo.metaDescription || "Home on the Range";
+	let Title = (page && page.seo.metaTitle) || 'Brian Ketelsen';
+	let Description = (page && page.seo.metaDescription) || 'Home on the Range';
 	let ogImage =
 		'https://user-images.githubusercontent.com/6764957/147861359-3ad9438f-41d1-47c8-aa05-95c7d18497f0.png';
 </script>
@@ -44,9 +44,7 @@
 	<meta name="twitter:image" content={ogImage} />
 </svelte:head>
 
-<div
-	class="flex flex-col justify-center items-start max-w-2xl  mx-auto pb-16"
->
+<div class="flex flex-col justify-center items-start max-w-2xl  mx-auto mb-16 px-4 sm:px-8">
 	<div class="flex flex-col-reverse sm:flex-row items-start">
 		<div class="flex flex-col pr-8">
 			<h1 class="font-bold text-3xl md:text-5xl tracking-tight mb-5 text-base-content">
@@ -55,33 +53,29 @@
 				>
 					<span class="relative text-primary skew-y-3">{page.title}</span>
 				</span>
-
 			</h1>
 			<h2 class="text-xl text-base-content mb-16">
-			{page.herotext}
+				{page.herotext}
 			</h2>
-
 		</div>
 		<!-- <div
 				class="w-[80px] h-[80px] rounded-full sm:w-[176px] sm:h-[136px] relative mb-8 sm:mb-0 mr-auto bg-cyan-300 bg-opacity-25"
 			/> -->
 	</div>
 	<section class="mb-16 w-full">
-		<h3 class="font-bold text-2xl md:text-4xl tracking-tight mb-6 ">
-			The Goods
-		</h3>
+		<h3 class="font-bold text-2xl md:text-4xl tracking-tight mb-6 ">The Goods</h3>
 		<div class="flex gap-6 flex-col md:flex-row">
 			{#each sections as section}
-			<SectionCard title={section.title} href={section.slug.current} description={section.description} />
+				<SectionCard
+					title={section.title}
+					href={section.slug.current}
+					description={section.description}
+				/>
 			{/each}
-
 		</div>
-
 	</section>
 	<section class="mb-16 w-full">
-		<h3 class="font-bold text-2xl md:text-4xl tracking-tight mb-6 ">
-			Featured Posts
-		</h3>
+		<h3 class="font-bold text-2xl md:text-4xl tracking-tight mb-6 ">Featured Posts</h3>
 		<div class="flex gap-6 flex-col md:flex-row">
 			<FeatureCard title="Welcome to swyxkit 2022!" href="/welcome" date={'Jan 2022'} />
 			<FeatureCard

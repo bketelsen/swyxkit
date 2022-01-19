@@ -65,8 +65,10 @@
 	-->
 </svelte:head>
 
-<article class="flex flex-col items-start justify-center w-full max-w-2xl mx-auto mb-16">
-	<h1 class="mb-4 text-3xl font-bold tracking-tight  md:text-5xl ">
+<article
+	class="flex flex-col px-4 sm:px-8 items-start justify-center w-full max-w-2xl mx-auto mb-16"
+>
+	<h1 class="mb-8 text-3xl font-bold tracking-tight  md:text-5xl ">
 		{title}
 	</h1>
 	<div class="flex flex-col items-start justify-between w-full mt-2 md:flex-row md:items-center bg">
@@ -77,7 +79,9 @@
 			{new Date(date).toISOString().slice(0, 10)}
 		</p>
 	</div>
-	<div class="flex h-1 w-full my-2 bg-gradient-to-r from-primary via-primary-focus to-accent" />
+	<div
+		class="flex h-1 w-[100vw] sm:w-full -mx-4 sm:mx-0 my-2 bg-gradient-to-r from-primary via-primary-focus to-accent"
+	/>
 
 	<div class="w-full mt-16 mb-32 prose-xl prose dark:prose-invert max-w-none">
 		<PortableText

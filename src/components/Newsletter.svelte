@@ -6,13 +6,9 @@
 </script>
 
 <section class="mb-16 w-full" id="newsletter">
-	<div
-		class="border border-accent-focus rounded p-6 my-4 w-full  bg-primary "
-	>
-		<div class="flex justify-between items-center space-x-4 text-primary-content">
-			<p class="text-lg md:text-xl font-bold">
-				Subscribe to the newsletter
-			</p>
+	<div class="border-y sm:border-x border-accent-focus sm:rounded p-6 my-4 w-full  bg-primary	">
+		<div class="flex justify-between items-center space-x-4 text-content-base">
+			<p class="text-lg md:text-xl font-bold">Subscribe to the newsletter</p>
 
 			<button
 				aria-label="Toggle Newsletter CTA"
@@ -61,14 +57,14 @@
 					placeholder="tim@apple.com"
 					autocomplete="email"
 					required={true}
-					class="px-4 py-2 mt-1  block w-full  rounded-md bg-white   pr-32"
+					class="px-4 py-2 mt-1 focus:ring-accent focus:border-accent block w-full border-base rounded-md bg-white text-content-base  pr-32"
 				/><button
-					class="flex items-center justify-center absolute right-1 top-1 px-4 pt-1 font-medium h-8 bg-secondary   rounded w-28"
+					class="flex items-center justify-center absolute right-1 top-1 px-4 pt-1 font-medium h-8 bg-secondary  text-content-base rounded w-28"
 					type="submit">Subscribe</button
 				>
 			</form>
 			<p class="text-sm ">
-				3 subscribers including my Mom – <a class="text-content" href="/#newsletter">23 issues</a>
+				3 subscribers including my Mom – <a href="/#newsletter">23 issues</a>
 			</p>
 		{/if}
 	</div>

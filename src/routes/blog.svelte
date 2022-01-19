@@ -10,9 +10,9 @@
 				error: await res.text()
 			};
 		}
-		const {page, posts} = await res.json();
+		const { page, posts } = await res.json();
 		return {
-			props: {  page, posts },
+			props: { page, posts },
 			maxage: 60 // 1 minute
 		};
 	}
@@ -24,9 +24,7 @@
 	export let page;
 	export let posts;
 
-	console.log(page)
-
-
+	console.log(page);
 </script>
 
 <svelte:head>
@@ -34,7 +32,7 @@
 	<meta name="description" content={page.seo.metaDescription} />
 </svelte:head>
 
-<section class="flex flex-col items-start justify-center max-w-2xl mx-auto mb-16">
+<section class="flex flex-col items-start justify-center max-w-2xl mx-auto mb-16 px-4 sm:px-8">
 	<h1 class="mb-4 text-3xl font-bold tracking-tight md:text-5xl ">
 		{page.title}
 	</h1>
@@ -42,23 +40,18 @@
 		{page.herotext}
 	</p>
 
+	<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight  md:text-4xl ">Most Popular</h3>
+	<IndexCard href="/foo" title="Hardcoded Blogpost # 1" date="106,255 views">
+		Just a hardcorded blogpost or you can use the metadata up to you
+	</IndexCard>
+	<IndexCard href="/welcome" title="Welcome to Swyxkit" date="106,255 views">
+		Just a hardcorded blogpost or you can use the metadata up to you
+	</IndexCard>
+	<IndexCard href="/moo" title="Hardcoded Blogpost # 3" date="106,255 views">
+		Just a hardcorded blogpost or you can use the metadata up to you
+	</IndexCard>
 
-		<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight  md:text-4xl ">
-			Most Popular
-		</h3>
-		<IndexCard href="/foo" title="Hardcoded Blogpost # 1" date="106,255 views">
-			Just a hardcorded blogpost or you can use the metadata up to you
-		</IndexCard>
-		<IndexCard href="/welcome" title="Welcome to Swyxkit" date="106,255 views">
-			Just a hardcorded blogpost or you can use the metadata up to you
-		</IndexCard>
-		<IndexCard href="/moo" title="Hardcoded Blogpost # 3" date="106,255 views">
-			Just a hardcorded blogpost or you can use the metadata up to you
-		</IndexCard>
-
-		<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight  md:text-4xl ">
-			All Posts
-		</h3>
+	<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight  md:text-4xl ">All Posts</h3>
 
 	{#if posts.length}
 		<ul class="">
@@ -71,12 +64,11 @@
 						date={new Date(item.date).toISOString().slice(0, 10)}
 						ghMetadata={item.ghMetadata}
 					>
-						{item.excerpt || ""}
+						{item.excerpt || ''}
 					</IndexCard>
 				</li>
 			{/each}
 		</ul>
-
 	{:else}
 		<div class="prose dark:prose-invert">No blogposts found!</div>
 	{/if}

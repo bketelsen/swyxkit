@@ -1,5 +1,4 @@
 <script context="module">
-	import { REPO_URL } from '$lib/siteConfig';
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ url }) {
 		return {
@@ -15,6 +14,7 @@
 	import NavLink from './NavLink.svelte';
 	export let sections;
 	export let origin = '';
+	export let global;
 	let isDark = false;
 	if (typeof localStorage !== 'undefined') {
 		if (
@@ -75,7 +75,7 @@
 		<!-- GIthub -->
 		<a
 			class="text-base-content hover:bg-primary rounded-lg"
-			href={REPO_URL}
+			href={global.author.github}
 			aria-label="GitHub source"
 		>
 			<svg aria-hidden="true" class="h-9 w-9 p-1" fill="currentColor" viewBox="0 0 24 24"
